@@ -17,7 +17,6 @@ public class UI_gameOver : MonoBehaviour
         {
             Event_system.gameOver.Subscribe(gameOver);           
             instance = this;
-            
         }
         else
         {

@@ -55,17 +55,18 @@
   <ItemGroup>
     <Compile Include="Assets\Player\Bullet.cs" />
     <Compile Include="Assets\GameOverEvent.cs" />
+    <Compile Include="Assets\Menu.cs" />
+    <Compile Include="Assets\UI\UI_Max_Score.cs" />
     <Compile Include="Assets\UnitDiedEvent.cs" />
     <Compile Include="Assets\Spawn_point.cs" />
     <Compile Include="Assets\Player\Player.cs" />
+    <Compile Include="Assets\UI\UI_gameOver.cs" />
     <Compile Include="Assets\Enemy\Enemy.cs" />
     <Compile Include="Assets\Spawn_enemys.cs" />
+    <Compile Include="Assets\UI\UI_score.cs" />
     <Compile Include="Assets\AEvent.cs" />
     <Compile Include="Assets\Event_system.cs" />
-    <Compile Include="Assets\UI\UI_score.cs" />
-    <Compile Include="Assets\UI\UI_gameOver.cs" />
-    <Compile Include="Assets\UI\UI_Max_Score.cs" />
-    <Compile Include="Assets\Menu.cs" />
+    <Compile Include="Assets\RestartEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -13,20 +13,25 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        if(Player.instance == null)
-            Player.instance = this;
+        Debug.Log("player");
+        if (instance == null)
+        {
+            instance = this;            
+            Event_system.gameOver.Subscribe(GameOver);
+        }
         else
         {
+            StopAllCoroutines();
             Destroy(gameObject);
             return;
         }
        // DontDestroyOnLoad(gameObject);
+        
     }
 
+
     void Start()
-    {
-        this.gameObject.SetActive(true);
-        Event_system.gameOver.Subscribe(GameOver);
+    {           
         Input.simulateMouseWithTouches = true;
         StartCoroutine(Shoot());
     }
@@ -53,7 +58,13 @@ public class Player : MonoBehaviour
         Gizmos.DrawCube(target, new Vector3(1, 1, 1));
 
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Event_system.gameOver.Publish(this);
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag=="Enemy")
@@ -65,6 +76,5 @@ public class Player : MonoBehaviour
     private void GameOver(Player player)
     {
         instance.StopAllCoroutines();
-        player.gameObject.SetActive(false);
     }
 }
