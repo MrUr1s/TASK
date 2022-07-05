@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -2366464198752727769}
   m_Layer: 0
   m_Name: Zombie1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,9 +110,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHP: 10
-  speed: 2
+  hP: 0
   score: 7
+  speed: 2
   chance: 60
+  target: {x: 0, y: 0, z: 0}
 --- !u!54 &-2366464198752727769
 Rigidbody:
   m_ObjectHideFlags: 0

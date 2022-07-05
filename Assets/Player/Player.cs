@@ -1,42 +1,70 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] Bullet bullet;
+    static public Player instance;
+
+    [SerializeField] Bullet bullet;   
     [SerializeField] Vector3 target=new Vector3(0,0);
     [SerializeField] float rate_of_fire = 10f;
-    LineRenderer lineRenderer;
 
+    private void Awake()
+    {
+        if(Player.instance == null)
+            Player.instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+       // DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {
+        this.gameObject.SetActive(true);
+        Event_system.gameOver.Subscribe(GameOver);
         Input.simulateMouseWithTouches = true;
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.SetPosition(0,transform.position);
+        StartCoroutine(Shoot());
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
-        foreach (Touch touch in Input.touches)        
-            if (touch.phase == TouchPhase.Began)
-            {
-                target = touch.position;
-                lineRenderer.SetPosition(1, target);
-            }
-        
-    }
+        if(Input.GetMouseButton(0))
+            target = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -Camera.main.transform.position.z - 1));
 
-    IEnumerator shoot()
+    }
+    IEnumerator Shoot()
     {
         while(true)
         {
-            Instantiate(bullet,transform.position,Quaternion.identity);
+            Instantiate(bullet, transform.position,
+             Quaternion.Euler(0, 0, Mathf.Atan2(target.y - transform.position.y, target.x - transform.position.x) * Mathf.Rad2Deg - 90));
             yield return new WaitForSeconds(1/rate_of_fire);
         }
     }
 
-    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(target, new Vector3(1, 1, 1));
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag=="Enemy")
+        {
+            Event_system.gameOver.Publish(this);
+        }
+    }
+
+    private void GameOver(Player player)
+    {
+        instance.StopAllCoroutines();
+        player.gameObject.SetActive(false);
+    }
 }
